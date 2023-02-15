@@ -66,7 +66,7 @@ const AuctionCard = ({ art, address, useCon }) => {
       var etime = new Date(Date.parse(date));
       var _Auctime = new Date(Date.parse(date));
       var _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 50));
-      if(_Auctime > _now || _now > _Aucend){
+      if(_Auctime < _now && _now < _Aucend){
         toast(<NotificationSuccess text="Not Yet Aution Time Or Auction Time Passed...." />);
 
       }
