@@ -43,7 +43,7 @@ export const createArt = async (
       // save Artifact Metadata  metadata to Pinata IPFS
       const res = await axios(config);
       // Pinanta IPFS url for uploaded metadata
-      const url = `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}`;
+      const url = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
 
       // mint the Artifact and save the IPFS url to the blockchain
       let price = await auctionContract.methods.MINT_PRICE().call();
@@ -107,7 +107,7 @@ export const updateArt = async (
       const res = await axios(config);
 
       // Pinanta IPFS url for uploaded metadata
-      const url = `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}`;
+      const url = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
 
       // Update Tokens Url On The Blockchain
       let transaction = await auctionContract.methods
