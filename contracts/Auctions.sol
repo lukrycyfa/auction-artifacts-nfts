@@ -186,6 +186,7 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
             "Auction Has To Be Active To Be Ended"
         );
         AllAucs[tokenId].aucOver = true; //This Line And All That Followa Will Be  Updating The Necessary Properties, Variables And Called functions
+        _ActAucCount.decrement(); 
         _transfer(msg.sender, address(this), tokenId);
     }
 
@@ -242,7 +243,7 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
      */
     function EndedAucs() public view returns (uint256[] memory) {
         uint256[] memory Ended = new uint256[](
-            _AucIdCount.current() - _ActAucCount.current()
+           _AucIdCount.current() -_ActAucCount.current()
         );
         uint256 index = 0;
         uint256 auctionCounts = _AucIdCount.current();
