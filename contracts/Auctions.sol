@@ -117,11 +117,11 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
                 }
                 return;
             }
-            uint new_length = AllAucs[tokenId].biddersCount + 1;
             AucBidder storage B = AucBidderIdx[tokenId][msg.sender];// These Next Few Lines  We Will Be Adding A new Bidder If It Dose'nt exists
             B.adr = msg.sender;                                     // And Updates Tokens Auction And Bidders Struct Properties And Variable.
             B.bid = BId;                                            // If Necessarry.
-            B.bidderIdx = new_length;
+            B.bidderIdx = AllAucs[tokenId].biddersCount;
+            AllAucs[tokenId].biddersCount++;
             if(AllAucs[tokenId].topAucBid < BId){
                     AllAucs[tokenId].topAucBid = BId;
                     AllAucs[tokenId].topAucBidder = msg.sender;
