@@ -293,9 +293,16 @@ const OwnCard = ({ art, useCon }) => {
         <Card.Header>
           <Stack direction="horizontal" gap={1}>
             <Identicon address={owner} size={22} />
-            <span className="font-monospace text-dark">
-              {truncateAddress(owner)}
-            </span>
+            {!collected && (
+              <span className="font-monospace text-dark">
+                {truncateAddress(owner)}
+              </span>
+            )}               
+            {collected && (
+              <span className="font-monospace text-dark">
+                {truncateAddress(HighestBidder.current)}
+              </span>
+            )}    
             {!running && HighestBid.current <= 0 && (
               <UpdateArtifact art={art} save={UpdateArt} />
             )}
