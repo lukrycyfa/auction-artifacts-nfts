@@ -67,18 +67,18 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
     //Making This Call Returns A fixed Array Containing Every Token Associated With The Caller
-    function OwnWallet()
-      public
-      view
-      returns (uint256[] memory)
-    {
-      uint256 ownerTokenCount = balanceOf(msg.sender);
-      uint256[] memory tokenIds = new uint256[](ownerTokenCount);
-      for (uint256 i = 0; i < ownerTokenCount; i++) { // Here We will Be Useing A loop And Some  Called Functions  
-        tokenIds[i] = tokenOfOwnerByIndex(msg.sender, i); // To Complete The Process i.e Return The Array.
-      }
-      return tokenIds;
+    
+
+    function ownWallet() public view returns (uint256[] memory) {
+    uint256[] memory tokenIds;
+    uint256 tokenCount = balanceOf(msg.sender);
+    for (uint256 i = 0; i < tokenCount; i++) {
+        uint256 tokenId = tokenOfOwnerByIndex(msg.sender, i);
+        tokenIds = abi.encodePacked(tokenIds, tokenId);
     }
+    return tokenIds;
+}
+
 
 
     //Here We Add The Callers Token To The Auctions
@@ -89,6 +89,8 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         " Callar Must be the token owner to add tokens to Autions");// These Make's Some Required Validations In the Function
         require(AllAucs[tokenId].tokenId != tokenId,        // To Be Asserted Before Adding The Token To Auctions.
             "Token Has Already Been Added To The Auction Or Has Been Auctioned");
+        require(AllAucs[tokenId].aucOver == true, "Token is already in an active auction");
+
         Auction storage B = AllAucs[tokenId]; //In The Next 7 lines We Are Creating A New Struct And  Updating It's Properties And  Variables.
         B.tokenId = tokenId;
         B.aucOwner = msg.sender; 
@@ -117,15 +119,18 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
                 }
                 return;
             }
-            AucBidder storage B = AucBidderIdx[tokenId][msg.sender];// These Next Few Lines  We Will Be Adding A new Bidder If It Dose'nt exists
-            B.adr = msg.sender;                                     // And Updates Tokens Auction And Bidders Struct Properties And Variable.
-            B.bid = BId;                                            // If Necessarry.
-            B.bidderIdx = AllAucs[tokenId].biddersCount;
-            AllAucs[tokenId].biddersCount++;
-            if(AllAucs[tokenId].topAucBid < BId){
-                    AllAucs[tokenId].topAucBid = BId;
-                    AllAucs[tokenId].topAucBidder = msg.sender;
-                }
+        
+                AucBidder storage bidder = AucBidderIdx[tokenId][msg.sender];
+            if (bidder.bidderIdx == 0) {
+                bidder.bidderIdx = AllAucs[tokenId].biddersCount + 1;
+                AllAucs[tokenId].biddersCount += 1;
+            }
+            bidder.adr = msg.sender;
+            bidder.bid = BId;
+            if (BId > AllAucs[tokenId].topAucBid) {
+                AllAucs[tokenId].topAucBid = BId;
+                AllAucs[tokenId].topAucBidder = msg.sender;
+            }
         return;
     }
 
