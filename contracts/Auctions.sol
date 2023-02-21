@@ -37,6 +37,10 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         bool toPay; 
     }
 
+    event NewTokenMinted(uint256 tokenId, address owner, string tokenURI);
+    event TokenAddedToAuction(uint256 tokenId, address auctionContract, uint256 startingPrice);
+
+
     
     mapping(uint  => Auction) public AllAucs; // A Mapping Matching A Token To An Auction
     mapping(uint => mapping(address => AucBidder)) public AucBidderIdx; // A Mapping Matching A Token To  It's Bidder's
@@ -54,17 +58,39 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     function safeMint(string memory uri) public payable  {
         require(totalSupply() < MAX_SUPPLY, "Max token supply reached");// These Make's Some Required Validations In the Function
         require(msg.value >= MINT_PRICE, "Insuficent funds for minting"); // To Be Asserted Before Minting A Token.
+        require(bytes(_uri).length > 0, "URI must not be empty");
+        require(_validateUri(_uri), "Invalid URI"); 
         uint256 tokenId = _tokenIdCounter.current(); // this line and the next assigns a token Id and updates the _tokenIdCounter State Variable.
         _tokenIdCounter.increment();    
         _safeMint(msg.sender, tokenId); // This Line And The Next Two Make's Call's To These Called Function To Complete The Minting Process.
         _setTokenURI(tokenId, uri); 
         payable(owner()).transfer(msg.value);
+
+        emit NewTokenMinted(tokenId, to, uri);
+
+    }
+     
+    function _validateUri(string memory _uri) internal view returns (bool) {
+        // Perform validation checks on the URI here
+        // Return true if the URI is valid, false otherwise
+        return true;
     }
 
+
+
+
+
+
     //Making This Call Will Withdraw Payments Made To The Contract, The Call Could Be Made Only By Contract Owner 
-    function withdrawPayments() public onlyOwner {
-      payable(owner()).transfer(address(this).balance);
-    }
+   function withdrawPayments() public onlyOwner {
+    require(address(this).balance <= withdrawalLimit, "Withdrawal limit exceeded");
+    uint256 payment = payments[msg.sender];
+    require(payment != 0, "No payments available for withdrawal");
+    require(address(this).balance >= payment, "Contract balance is insufficient");
+    payments[msg.sender] = 0;
+    payable(msg.sender).transfer(payment);
+}
+
 
     //Making This Call Returns A fixed Array Containing Every Token Associated With The Caller
     
@@ -102,6 +128,8 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         _ActAucCount.increment();  // Here We Are Updating This State Variables By increamenting Their Counts
         _AucIdCount.increment();
         return;
+         emit TokenAddedToAuction(tokenId, auctionContract, startingPrice);
+
     }
 
 
