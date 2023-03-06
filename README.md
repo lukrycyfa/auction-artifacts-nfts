@@ -63,7 +63,7 @@ Update the contracts/Auctions.sol file with your solidity code.
 
 Notice that if you change the contract and file name you will also need to update the deploy script that we will use later.
 
-### 3.2 Compile the smart contract
+### 3.2 Compile the smart contract.
 
 ```bash
 npx hardhat compile
