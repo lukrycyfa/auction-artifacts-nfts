@@ -109,7 +109,7 @@ export const updateArt = async (
       // Pinanta IPFS url for uploaded metadata
       const url = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
 
-      // Update Tokens Url On The Blockchain
+      // Update Tokens Uri On The Blockchain
       let transaction = await auctionContract.methods
         ._setURI(index.toString(), url)
         .send({ from: defaultAccount });
@@ -162,9 +162,21 @@ export const uploadArtifactFile = async (e) => {
   }
 };
 
-// Called To Fetch All Artifacts On Auctions
+// Called To Fetch All Artifacts On Autions
 export const getArtifactsOnAuc = async (auctionContract) => {
   try {
+    // testing Request To Pinata
+    var config = {
+      method: "get",
+      url: "https://api.pinata.cloud/data/testAuthentication",
+      headers: {
+        pinata_api_key: _api,
+        pinata_secret_api_key: _sec,
+      },
+    };
+
+    const res = await axios(config);
+
     // Create An Array, Make A Call To The Contract And Push Returned Artifacts
     const arts = [];
     const ActiveAucs = await auctionContract.methods.ActiveAucs().call();
@@ -284,6 +296,7 @@ export const getOwnCollectables = async (auctionContract, address) => {
   }
 };
 
+//#tag Pls Use My Cors Proxy Appropriately Or We All Get Blocked.
 //Called To get The Artifacts from Pinata's IPFS
 export const fetchArtMetadata = async (ipfsUrl) => {
   try {
@@ -291,7 +304,7 @@ export const fetchArtMetadata = async (ipfsUrl) => {
     //Ipfs Request
     var config = {
       method: "get",
-      url: ipfsUrl,
+      url:ipfsUrl,
       headers: {
         Authorization: process.env.REACT_APP_JWT,
       },
@@ -382,7 +395,7 @@ export const ReactivateDeadAuction = async (
   }
 };
 
-// Called To End An Auction By Thw Token Owner
+// Called To End An Auction By Token Owner
 export const EndAuction = async (performActions, auctionContract, TokenId) => {
   try {
     await performActions(async (kit) => {
@@ -397,7 +410,7 @@ export const EndAuction = async (performActions, auctionContract, TokenId) => {
   }
 };
 
-// Called To Collect A Token When AUctions Are Ended By The Highest Bidder
+// Called To Transfer A Token When AUctions Are Ended By The Highest Bidder
 export const transToAucWinner = async (
   auctionContract,
   performActions,
@@ -418,7 +431,7 @@ export const transToAucWinner = async (
   }
 };
 
-// Called By The Contract Owner To Update The Mintong Price
+// Called By The Contract Owner To Update The Mint Price
 export const UpdateMintPrice = async (
   auctionContract,
   performActions,
@@ -459,7 +472,7 @@ export const GetMintPrice = async (auctionContract) => {
   }
 };
 
-// Called By The Contract Owner To Withdraw The Contracts Balance.
+// Called By Contract Owner To Withdraw The Contracts Balance.
 export const WithdrawBal = async (auctionContract) => {
   try {
     //calling the contract
