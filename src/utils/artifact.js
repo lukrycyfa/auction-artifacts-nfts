@@ -305,9 +305,9 @@ export const fetchArtMetadata = async (ipfsUrl) => {
     var config = {
       method: "get",
       url:ipfsUrl,
-      headers: {
-        Authorization: process.env.REACT_APP_JWT,
-      },
+//       headers: {
+//         Authorization: process.env.REACT_APP_JWT,
+//       },
     };
     const meta = await axios(config);
     return meta;
