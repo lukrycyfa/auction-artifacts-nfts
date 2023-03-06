@@ -24,7 +24,7 @@ git clone https://github.com/lukrycyfa/auction-artifacts-nfts.git
 ```
 ### 2.2 Get your own ipfs storage:
 - You will be needing an ipfs storage for this project. I used the Pinata Ipfs, [Pinata Ipfs](https://app.pinata.cloud/). Sign up with pinata, get a secret key, an api key and a JWT key instructions on that are found in the doc's [Authentication](https://docs.pinata.cloud/pinata-api/authentication).
-- Create a .env file and update this three variables in the .env file with your new keys REACT_APP_API_KEY for your api key, REACT_APP_SECRET_API_KEY for your secret key and REACT_APP_JWT for your JWT key.
+- Create a .env file and update these three variables in the .env file with your new keys REACT_APP_API_KEY for your api key, REACT_APP_SECRET_API_KEY for your secret key and REACT_APP_JWT for your JWT key.
 
 ```js
 REACT_APP_API_KEY = your api key;
