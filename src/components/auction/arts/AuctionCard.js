@@ -136,6 +136,7 @@ const AuctionCard = ({ art, address, useCon }) => {
         Aucended.current = true;
         setAucStarted(false);
         clearInterval(timeHandle);
+        setCountdown("00:00");
         ChkAucStatus(index.toString());
       }, parseInt(_Aucend - _now + 10000));
     };
