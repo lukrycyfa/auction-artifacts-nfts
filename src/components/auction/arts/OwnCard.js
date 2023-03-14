@@ -124,6 +124,7 @@ const OwnCard = ({ art, useCon }) => {
       setLoading(true);
       // Calling The Contract And Other Validations
       const _Auctime = new Date(Date.parse(date));
+      const _tim = (_Auctime.getTime() / 1000).toFixed();
       var _spare = new Date();
       _spare = new Date(_spare.setMinutes(_spare.getMinutes() + 15));
       if (_Auctime < _spare) {
@@ -132,7 +133,7 @@ const OwnCard = ({ art, useCon }) => {
         );
         return;
       }
-      await AddArtifactToAuc(useCon, performActions, tokenId);
+      await AddArtifactToAuc(useCon, performActions, tokenId, _tim);
       toast(<NotificationSuccess text="Adding Artifact To Auction...." />);
       window.location.reload();
     } catch (error) {
