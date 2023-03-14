@@ -20,6 +20,7 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     Counters.Counter public _ActAucCount; // Number Of Tokens Currently Active In Autions 
     uint256 public MAX_SUPPLY = 1000000; // Maximum Amount Of Tokens To Be Minted On the Contract
     uint public MINT_PRICE = 0; // Price For Minting
+    uint private _AucDuration = 360; // Auction Duration 
     struct AucBidder{ // Struct To Represent An Auction Bidder
         uint bidderIdx;  
         address adr;  
@@ -28,7 +29,8 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
     struct Auction{ // Struct To Represnt An Auction.
         uint tokenId;
-        address aucOwner; 
+        address aucOwner;
+        uint auctimestamp;
         uint topAucBid; 
         address topAucBidder; 
         uint biddersCount; 
@@ -82,7 +84,7 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
 
     //Here We Add The Callers Token To The Auctions
-    function AddToAutions(uint tokenId)
+    function AddToAutions(uint tokenId, uint auctime)
       public
     {
         require(ownerOf(tokenId) == msg.sender, 
@@ -96,6 +98,7 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         B.topAucBid = 0;
         B.aucOver = false;
         B.toPay = false;
+        B.auctimestamp = auctime;
         B.aucIdx = _AucIdCount.current(); 
         _ActAucCount.increment();  // Here We Are Updating This State Variables By increamenting Their Counts
         _AucIdCount.increment();
@@ -108,7 +111,9 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
        public{
         require(ownerOf(tokenId) != msg.sender, "You Cant bid on your own token");
         require(AllAucs[tokenId].tokenId == tokenId, "Invalid Token, Not Part Of The Auction"); // These Make's Some Required Validations In the Function
-        require(!AllAucs[tokenId].aucOver, "Auction On This Token Is Over"); // To Be Asserted Before Addiing The Bidder To The Called Token's Auction  
+        require((AllAucs[tokenId].auctimestamp + _AucDuration) > block.timestamp && AllAucs[tokenId].auctimestamp < block.timestamp && !AllAucs[tokenId].aucOver, 
+        "invalid timing or request"); // To Be Asserted Before Adding The Bidder To The Called Token's Auction Or Bid On the Auction
+        //require(!AllAucs[tokenId].aucOver, "Auction On This Token Is Over");   
             if(AucBidderIdx[tokenId][msg.sender].adr == msg.sender){ // Here A condition Is Met if The Bidder Already Exists
                 AucBidderIdx[tokenId][msg.sender].bid = BId;        // And Updates The Tokens Auction And Bidders Struct Properties And Variables.
                 if(AllAucs[tokenId].topAucBid < BId){ 
@@ -206,7 +211,8 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         public {
         require(msg.sender == ownerOf(tokenId), "Requires the Owner as the sender"); // This Line And The Next Two Make's A Required Validations In the Function
         require(AllAucs[tokenId].tokenId == tokenId, "Token Is Not Part Of The Auction");// Before The AUction Is Ended And The And ENable Te Transfer Process
-        require(!AllAucs[tokenId].aucOver, "Auction Has To Be Active To Be Ended"); 
+        require((AllAucs[tokenId].auctimestamp + _AucDuration) < block.timestamp && !AllAucs[tokenId].aucOver , "invalid timing or Auction Has To Be Active To Be Ended"); // new update
+        //require(!AllAucs[tokenId].aucOver, "Auction Has To Be Active To Be Ended"); 
         AllAucs[tokenId].aucOver = true;//This Line And All That Followa Will Be  Updating The Necessary Properties, Variables And Called functions
         AllAucs[tokenId].toPay = true;  // Needed To Complete this Proccess.
         _ActAucCount.decrement();        
