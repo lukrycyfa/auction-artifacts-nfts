@@ -341,14 +341,15 @@ export const fetchAuctionContractOwner = async (auctionContract) => {
 export const AddArtifactToAuc = async (
   auctionContract,
   performActions,
-  TokenId
+  TokenId,
+  _tim
 ) => {
   try {
     await performActions(async (kit) => {
       const { defaultAccount } = kit;
       //calling the contract
       await auctionContract.methods
-        .AddToAutions(TokenId)
+        .AddToAutions(TokenId, _tim)
         .send({ from: defaultAccount });
     });
   } catch (e) {
