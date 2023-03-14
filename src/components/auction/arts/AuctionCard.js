@@ -65,7 +65,7 @@ const AuctionCard = ({ art, address, useCon }) => {
       var _now = new Date()
       var etime = new Date(Date.parse(date));
       var _Auctime = new Date(Date.parse(date));
-      var _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 50));
+      var _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
       if(_Auctime < _now && _now < _Aucend){
         toast(<NotificationSuccess text="Not Yet Aution Time Or Auction Time Passed...." />);
 
@@ -93,7 +93,7 @@ const AuctionCard = ({ art, address, useCon }) => {
         HighestBid.current = formatBigNumber(info[0]);
         var _now = new Date();
         var etime = new Date(Date.parse(date));
-        const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 50));
+        const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
         if (_Aucend < _now) {
           Aucended.current = true;
           if (HighestBid.current > 0) {
@@ -116,8 +116,8 @@ const AuctionCard = ({ art, address, useCon }) => {
     var etime = new Date(Date.parse(date));
     var dtime = new Date(Date.parse(date));
     const _Auctime = new Date(Date.parse(date));
-    const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 50));
-    var duration = new Date(dtime.setMinutes(dtime.getMinutes() + 50));
+    const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+    var duration = new Date(dtime.setMinutes(dtime.getMinutes() + 6));
     var _now = new Date();
     /** This Only Executes when It's Auction Time And During The Auction */
     const _ifAuctime = async () => {
@@ -156,7 +156,7 @@ const AuctionCard = ({ art, address, useCon }) => {
     var auctime = new Date(Date.parse(date));
     setAucstart(auctime.toLocaleString());
     var etime = new Date(Date.parse(date));
-    var aucend = new Date(etime.setMinutes(etime.getMinutes() + 50));
+    var aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
     setAucend(aucend.toLocaleString());
     var _now = new Date();
     if (aucend < _now) {
