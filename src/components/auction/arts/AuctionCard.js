@@ -117,8 +117,8 @@ const AuctionCard = ({ art, address, useCon }) => {
     var etime = new Date(Date.parse(date));
     var dtime = new Date(Date.parse(date));
     const _Auctime = new Date(Date.parse(date));
-    const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
-    var duration = new Date(dtime.setMinutes(dtime.getMinutes() + 6));
+    const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
+    var duration = new Date(dtime.setMinutes(dtime.getMinutes() + 5));
     var _now = new Date();
     /** This Only Executes when It's Auction Time And During The Auction */
     const _ifAuctime = async () => {
@@ -139,7 +139,7 @@ const AuctionCard = ({ art, address, useCon }) => {
         clearInterval(timeHandle);
         setCountdown("00:00");
         ChkAucStatus(index.toString());
-      }, parseInt(_Aucend - _now + 4000));
+      }, parseInt((_Aucend - _now) + 4000));
     };
 
     if (_Auctime < _now) {
@@ -158,7 +158,7 @@ const AuctionCard = ({ art, address, useCon }) => {
     var auctime = new Date(Date.parse(date));
     setAucstart(auctime.toLocaleString());
     var etime = new Date(Date.parse(date));
-    var aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+    var aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
     setAucend(aucend.toLocaleString());
     var _now = new Date();
     if (aucend < _now) {
