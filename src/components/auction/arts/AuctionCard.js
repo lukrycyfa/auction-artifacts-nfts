@@ -140,6 +140,7 @@ const AuctionCard = ({ art, address, useCon }) => {
         setCountdown("00:00");
         ChkAucStatus(index.toString());
       }, parseInt((_Aucend.getTime() - _now.getTime()) + 4000));
+      console.log((_Aucend.getTime() - _now.getTime()), "time diff");
     };
 
     if (_Auctime < _now) {
