@@ -142,13 +142,14 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
     // Making This Call Is Done By The Owner Of A Token That Was On AUction WIthout A Bid And Ended to Restore It Back On Auctions
-    function ReactivateDeadAuc(uint TokenId) public {
+    function ReactivateDeadAuc(uint TokenId, uint auctime) public {
             require(ownerOf(TokenId) == msg.sender, "You Must Be The Token Owner To Reactivate The Auction");//This Line And The Next Three Make's Some Required Validations In the Function
             require(AllAucs[TokenId].tokenId == TokenId, "Token Has not Been Added To The Auction");//Validations In the Function To Be Asserted Before Restoring The Auction
             require(AllAucs[TokenId].aucOver, "This Token Is Still On Auction"); 
             require(AllAucs[TokenId].topAucBid <= 0, "There Was A Bid On This Auction");
             AllAucs[TokenId].aucOver = false;   // This Line And The Next Will Be Updating Necessary Properties And State Variables.
             AllAucs[TokenId].toPay = false;
+            AllAucs[TokenId].auctimestamp = auctime;
             _ActAucCount.increment();       
     }
 
