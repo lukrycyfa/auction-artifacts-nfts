@@ -241,7 +241,7 @@ const OwnCard = ({ art, useCon }) => {
         setRunning(false);
         setAucended(true);
         ChkAucStatus(index.toString());
-      }, parseInt(_Aucend - _now + 5000));
+      }, parseInt(_Aucend - _now + 8000));
     };
 
     var _now = new Date();
@@ -253,7 +253,7 @@ const OwnCard = ({ art, useCon }) => {
       setTimeout(() => {
         setRunning(true);
         _chkcall();
-      }, parseInt(_Auctime - _now + 5000));
+      }, parseInt(_Auctime - _now + 8000));
     }
   }, [date, index, ChkAucStatus]);
 
