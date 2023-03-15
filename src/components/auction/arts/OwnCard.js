@@ -158,6 +158,7 @@ const OwnCard = ({ art, useCon }) => {
         return;
       }
       var _Atime = new Date(Date.parse(date));
+      const _tim = (_Atime.getTime() / 1000).toFixed();
       var _spare = new Date();
       _spare = new Date(_spare.setMinutes(_spare.getMinutes() + 15));
       if (_spare > _Atime) {
@@ -165,7 +166,7 @@ const OwnCard = ({ art, useCon }) => {
         return;
       }
 
-      await ReactivateDeadAuction(useCon, performActions, tokenId);
+      await ReactivateDeadAuction(useCon, performActions, tokenId, _tim);
       toast(<NotificationSuccess text="Restoring Dead Auction...." />);
       window.location.reload();
     } catch (error) {
