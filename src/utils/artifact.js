@@ -381,14 +381,15 @@ export const BidOnArtifact = async (
 export const ReactivateDeadAuction = async (
   auctionContract,
   performActions,
-  TokenId
+  TokenId,
+  _tim
 ) => {
   try {
     await performActions(async (kit) => {
       const { defaultAccount } = kit;
       //calling the contract
       await auctionContract.methods
-        .ReactivateDeadAuc(TokenId)
+        .ReactivateDeadAuc(TokenId, _tim)
         .send({ from: defaultAccount });
     });
   } catch (e) {
