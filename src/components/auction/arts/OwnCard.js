@@ -183,7 +183,7 @@ const OwnCard = ({ art, useCon }) => {
       setLoading(true);
       // Calling The Contract And Other Validations
       var etime = new Date(Date.parse(date));
-      var aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+      var aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
       var _now = new Date();
       if (aucend > _now) {
         toast(
@@ -233,7 +233,7 @@ const OwnCard = ({ art, useCon }) => {
   const Auctimmer = useCallback(async () => {
     const _Auctime = new Date(Date.parse(date));
     var etime = new Date(Date.parse(date));
-    const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+    const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
     /** This Only Executes when It's Auction Time And During The Auction */
     const _chkcall = () => {
       var _now = new Date();
@@ -241,7 +241,7 @@ const OwnCard = ({ art, useCon }) => {
         setRunning(false);
         setAucended(true);
         ChkAucStatus(index.toString());
-      }, parseInt(_Aucend - _now + 8000));
+      }, parseInt((_Aucend - _now) + 8000));
     };
 
     var _now = new Date();
@@ -253,7 +253,7 @@ const OwnCard = ({ art, useCon }) => {
       setTimeout(() => {
         setRunning(true);
         _chkcall();
-      }, parseInt(_Auctime - _now + 8000));
+      }, parseInt((_Auctime - _now) + 8000));
     }
   }, [date, index, ChkAucStatus]);
 
@@ -262,7 +262,7 @@ const OwnCard = ({ art, useCon }) => {
     var auctime = new Date(Date.parse(date));
     setAucStart(auctime.toLocaleString());
     var etime = new Date(Date.parse(date));
-    var aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+    var aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
     setAucEnd(aucend.toLocaleString());
     var _now = new Date();
     if (aucend < _now) {
