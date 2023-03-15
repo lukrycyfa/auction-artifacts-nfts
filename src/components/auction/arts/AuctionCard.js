@@ -65,7 +65,7 @@ const AuctionCard = ({ art, address, useCon }) => {
       var _now = new Date()
       var etime = new Date(Date.parse(date));
       var _Auctime = new Date(Date.parse(date));
-      var _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+      var _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
       if(_Auctime > _now || _now > _Aucend){
         toast(<NotificationSuccess text="Not Yet Aution Time Or Auction Time Passed...." />);
         return;
@@ -94,7 +94,7 @@ const AuctionCard = ({ art, address, useCon }) => {
         HighestBid.current = formatBigNumber(info[0]);
         var _now = new Date();
         var etime = new Date(Date.parse(date));
-        const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 6));
+        const _Aucend = new Date(etime.setMinutes(etime.getMinutes() + 5));
         if (_Aucend < _now) {
           Aucended.current = true;
           if (HighestBid.current > 0) {
