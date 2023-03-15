@@ -138,6 +138,9 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     // Making This Call Will Explicitly Change And Update's The Uri To A Token By The Caller.
     function _setURI(uint tokenId, string memory uri) public{
         require(ownerOf(tokenId) == msg.sender, "Can Only Update Owners Token Uri");
+        if(AllAucs[tokenId].tokenId == tokenId){ 
+            require(AllAucs[tokenId].aucOver, "Auction On This Token Is On");  
+        }
         _setTokenURI(tokenId, uri);
     }
 
@@ -232,7 +235,8 @@ contract AuctionNFTs is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     function TransferAucToWinner(address payable item_owner, uint tokenId) 
         public payable  {   
         require(msg.sender == AuctionTopBidder(tokenId), "Invalid Address, Caller IS Not The Hightest BIdder");// This And The Next Line Will Be Adding Some Required Assertions To the Functions
-        require(msg.value >= AllAucs[tokenId].topAucBid, "Invalid Payment, Bid Is Does Not Equal Hightest Bid"); 
+        require(msg.value >= AllAucs[tokenId].topAucBid, "Invalid Payment, Bid Is Does Not Equal Hightest Bid");
+        require(AllAucs[tokenId].aucOver, "Requested Token Is Still On Auctions");
         item_owner.transfer(msg.value); // Here We Will Be Calling Some Functions To Complete The Proccess i.e The Transfer 
         safeTransferFrom(item_owner, msg.sender, tokenId);
     }
