@@ -139,7 +139,7 @@ const AuctionCard = ({ art, address, useCon }) => {
         clearInterval(timeHandle);
         setCountdown("00:00");
         ChkAucStatus(index.toString());
-      }, parseInt((_Aucend - _now) + 4000));
+      }, parseInt((_Aucend.getTime() - _now.getTime()) + 4000));
     };
 
     if (_Auctime < _now) {
@@ -149,7 +149,7 @@ const AuctionCard = ({ art, address, useCon }) => {
       /**Times Out At Auction Start */
       setTimeout(() => {
         _ifAuctime();
-      }, parseInt(_Auctime - _now));
+      }, parseInt(_Auctime.getTime() - _now.getTime()));
     }
   }, [date, index, ChkAucStatus]);
 
