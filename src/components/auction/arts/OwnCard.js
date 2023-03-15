@@ -209,12 +209,9 @@ const OwnCard = ({ art, useCon }) => {
       // Calling The Contract And Other Validations
       const auclst = await ActAucs(useCon);
       var idx = auclst.findIndex((el) => el === data.index.toString());
-      var etime = new Date(Date.parse(date));
-      var _auctime = new Date(etime.setMinutes(etime.getMinutes() - 8));
-      var _now = new Date();
-      if (_auctime < _now && idx >= 0) {
+      if (idx >= 0) {
         toast(
-          <NotificationSuccess text="Can't Update An Artifact While Close To Aution Time Or Still An Active Auction..." />
+          <NotificationSuccess text="Can't Update An Artifact While On Auctions..." />
         );
         return;
       }
@@ -305,7 +302,7 @@ const OwnCard = ({ art, useCon }) => {
                 {truncateAddress(HighestBidder.current)}
               </span>
             )}    
-            {!running && HighestBid.current <= 0 && (
+            {!running && !tokenonauc && HighestBid.current <= 0 && (
               <UpdateArtifact art={art} save={UpdateArt} />
             )}
             <Badge bg="secondary" className="ms-auto">
